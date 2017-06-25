@@ -1,5 +1,5 @@
 # from tqdm import tqdm
-# import numpy as np
+import numpy as np
 import argparse
 import tweepy
 import queue
@@ -41,20 +41,18 @@ def getFriendsId(api, id):
             else:
                 raise e
 
-def bfs(api, table, head, maxDepth):
+def bfs(api, head, maxDepth):
     bfsQ = queue.deque( [(head, 0)] )
 
     while len(bfsQ) != 0 and bfsQ[0][1] < maxDepth:
         nodeId = bfsQ.popleft()
-        print( nodeId )
+        print("getting userId: ", nodeId)
 
-        if not nodeId[0] in table:
+        if not os.path.isfile("./downloaded/" + str(nodeId[0]) + ".npy"):
             friendsId = getFriendsId(api, nodeId[0])
-            table[ nodeId[0] ] = friendsId
+            np.save("./downloaded/" + str(nodeId[0]), np.array(friendsId))
             for friendId in friendsId:
                 bfsQ.append( (friendId, nodeId[1]+1) )
 
-table = {}
 user_info = api.get_user(screen_name=args.name)
-bfs(api, table, user_info._json['id'], 2)
-print( table )
+bfs(api, user_info._json['id'], args.limit)
