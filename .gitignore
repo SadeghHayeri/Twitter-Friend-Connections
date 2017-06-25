@@ -2,7 +2,7 @@
 *.pyc
 
 # Secrets python file
-# /secrets.py
+/secrets.py
 
 # jupyter checkpints
 /.ipynb_checkpoints
