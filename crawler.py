@@ -35,9 +35,9 @@ def getFriendsId(api, id):
 
         except tweepy.TweepError as e:
             if e.response.status_code == 429:
-                print("sleep for 5Min")
+                print("sleep for 5Min! -> " + time.ctime())
                 time.sleep(5 * 60)
-                print("start over!")
+                print("continue! -> " + time.ctime())
             else:
                 raise e
 
