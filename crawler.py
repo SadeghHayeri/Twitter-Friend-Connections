@@ -44,15 +44,20 @@ def getFriendsId(api, id):
 def bfs(api, head, maxDepth):
     bfsQ = queue.deque( [(head, 0)] )
 
-    while len(bfsQ) != 0 and bfsQ[0][1] < maxDepth:
-        nodeId = bfsQ.popleft()
-        print("getting userId: ", nodeId)
+    while True:
+        try:
+            while len(bfsQ) != 0 and bfsQ[0][1] < maxDepth:
+                nodeId = bfsQ.popleft()
+                print("getting userId: ", nodeId)
 
-        if not os.path.isfile("./downloaded/" + str(nodeId[0]) + ".npy"):
-            friendsId = getFriendsId(api, nodeId[0])
-            np.save("./downloaded/" + str(nodeId[0]), np.array(friendsId))
-            for friendId in friendsId:
-                bfsQ.append( (friendId, nodeId[1]+1) )
+                if not os.path.isfile("./downloaded/" + str(nodeId[0]) + ".npy"):
+                    friendsId = getFriendsId(api, nodeId[0])
+                    np.save("./downloaded/" + str(nodeId[0]), np.array(friendsId))
+                    for friendId in friendsId:
+                        bfsQ.append( (friendId, nodeId[1]+1) )
+        except:
+            print("bad error!")
+            np.save("bfsQ", np.array(bfsQ))
 
 user_info = api.get_user(screen_name=args.name)
 bfs(api, user_info._json['id'], args.limit)
