@@ -76,6 +76,7 @@ def downloadProfile(api, outputPath, id):
             profileData = api.get_user(id=id)
             np.save(outputPath + '/' + str(id), np.array(profileData))
             print("new profile added: ", id)
+            return
         except tweepy.TweepError as e:
             if e.response.status_code == 429:
                 print("sleep for 5Min! -> " + time.ctime())
