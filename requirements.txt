@@ -1,4 +1,3 @@
 tweepy
 numpy
 argparse
-graph_tool
